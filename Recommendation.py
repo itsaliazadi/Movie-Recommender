@@ -3,10 +3,12 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+
 df = pd.read_csv("movies.csv")
+df["data"] = df["title"] + " " + df["description"]
 
 vec = TfidfVectorizer()
-vecs = vec.fit_transform(df["description"].apply(lambda x: np.str_(x)))
+vecs = vec.fit_transform(df["data"].apply(lambda x: np.str_(x)))
 
 similarity = cosine_similarity(vecs)
 
