@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from fuzzywuzzy import process
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -12,7 +13,13 @@ vecs = vec.fit_transform(df["data"].apply(lambda x: np.str_(x)))
 
 similarity = cosine_similarity(vecs)
 
-def recommend(movie):
+def recommend(movie_title):
+
+    movie = ""
+
+    closest_match = process.extractOne(movie_title, list(df["title"]))
+    if closest_match[1] > 90:
+        movie = closest_match[0]
         
     movie_index = df[df["title"] == movie].index[0]
 
