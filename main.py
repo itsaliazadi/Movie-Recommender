@@ -1,3 +1,6 @@
 import Recommendation
+from Gui import Gui
 
-print(Recommendation.recommend("The Green Mile"))
+app = Gui()
+app.mainloop()
+
