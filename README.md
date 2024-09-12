@@ -21,10 +21,9 @@ The **Movie Recommender** is a Python-based application that provides personaliz
   
 # Getting Started
 Make sure you have the following installed on your machine:
-
-Python (version 3.x)
-Pip
-Clone this repository to your local machine:
+* Python (version 3.x)
+* Pip
+* Clone this repository to your local machine:
 
 git clone https://github.com/itsaliazadi/Movie-Recommender
 
