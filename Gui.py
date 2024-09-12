@@ -23,12 +23,16 @@ class Gui(ctk.CTk):
         # Text box for displaying recommendations
         self.recommendation_box = ctk.CTkTextbox(self, width=560, height=300)
         self.recommendation_box.place(x=25, y=220)
+        self.recommendation_box.tag_config('green', foreground='Light Green')
+
+        self.suggested_movie = ""
+        self.recommendation_box.bind("<Button-1>", self.on_recommendation_click)
 
     def submit_movie(self):
         movie_title = self.movie_entry.get()
         
         if movie_title:  # Check if the entry is not empty
-            recommendations = Recommendation.recommend(movie_title)[0:10]
+            recommendations = Recommendation.recommend(movie_title)
             self.display_recommendations(recommendations)
 
     def display_recommendations(self, recommendations):
@@ -36,11 +40,25 @@ class Gui(ctk.CTk):
         self.recommendation_box.delete("1.0", tk.END)
         
 
-        if len(recommendations) != 0:
+        if type(recommendations) == list:
             for movie in recommendations:
                 self.recommendation_box.insert(tk.END, f"-{movie}\n") 
         else:
-            self.recommendation_box.insert(tk.END, "Sorry!This movie is not available in our database.") 
+            self.suggested_movie = recommendations
+            # self.recommendation_box.insert(tk.END, f"Sorry!This movie is not available in our database.\nDid you mean '{self.suggested_movie}'?")
+
+            self.recommendation_box.insert(tk.END, "Sorry! This movie is not available in our database.\nDid you mean ")
+            self.recommendation_box.insert(tk.END, f"{self.suggested_movie}", 'green')
+            self.recommendation_box.insert(tk.END, "?")
+             
+
+    def on_recommendation_click(self, event):
+        # Check if there is a suggested movie
+        if self.suggested_movie:
+            self.movie_entry.delete(0, tk.END)  # Clear current entry
+            self.movie_entry.insert(0, self.suggested_movie)  # Insert the suggested movie
+            self.suggested_movie = None  # Reset the suggestion after use
+            self.submit_movie()
 
 if __name__ == "__main__":
     app = Gui()
