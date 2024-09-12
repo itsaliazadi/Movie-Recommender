@@ -20,14 +20,16 @@ def recommend(movie_title):
     closest_match = process.extractOne(movie_title, list(df["title"]))
     if closest_match[1] > 90:
         movie = closest_match[0]
+    else:
+        return closest_match[0]
     
     try:
         
         movie_index = df[df["title"] == movie].index[0]
 
         scores = list(enumerate(similarity[movie_index]))
-        sorted_scores = sorted(scores, key=lambda x:x[1], reverse=True)[1:]
-        print(sorted_scores)
+        sorted_scores = sorted(scores, key=lambda x:x[1], reverse=True)[1:11]
+        # print(sorted_scores)
         
         movie_recommendations = list()
 
